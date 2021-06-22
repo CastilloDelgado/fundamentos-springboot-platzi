@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class User  {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -18,13 +18,21 @@ public class User  {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String email;
 
     private LocalDate birthDate;
+
     @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
+
+    public User() {
+
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
 
     public User(String name, String email, LocalDate birthDate) {
         this.name = name;
@@ -70,5 +78,10 @@ public class User  {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    @Override
+    public String toString(){
+        return "User{"+"id="+id+",name="+name+'\''+",email="+email+'\''+",birthDate="+birthDate+",posts="+posts+'}';
     }
 }
